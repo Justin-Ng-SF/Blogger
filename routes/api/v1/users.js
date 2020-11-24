@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const config = require('config')
+
 //usermodel
 const User = require('../../../models/users')
 
@@ -34,7 +37,7 @@ router.post('/', [
             let user = await User.findOne({ email });
             if (user) {
                 //must put return because cannot set headers after sent to client, which is being done at res.send(...)
-                console.log(email, 'is in use')
+                console.log(email, 'already exists')
                 return res.status(400).json({ errors: [{msg: 'User already exists'}] });
             }
 
@@ -55,8 +58,25 @@ router.post('/', [
             await user.save();
 
             //return jsonwebtoken
+            const payload = {
+                user: {
+                    id: user.id
+                }
+            }
 
-            res.send('User route')
+
+            //json webtoken with user.id
+            //used in headers to access protected routes, used for auth
+            jwt.sign(
+                payload,
+                config.get('jwtSecret'),
+                { expiresIn: 360000 },
+                (err, token) => {
+                    if (err) throw err;
+                    res.json({ token })
+                }
+            );
+
         } catch (error) {
             console.error(error.message);
             res.status(500).send('Serve Error')
