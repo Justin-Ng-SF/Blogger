@@ -44,3 +44,13 @@ access data in database
 --------------------------------------------------
 data storage->clusters->collections
 --------------------------------------------------
+
+
+_id:5fbd8b2b58b9ed87ec4bbb28
+isDeleted:false
+firstName:"justin"
+lastName:"ng"
+email:"isemail@yes.com"
+password:"$2a$10$j713k/KKPIpH1BYNHEqM9uQ02S7BT7B9D7YpM/LKjP0.z6s/qa1zq" verygoodpassword
+date:2020-11-24T22:37:31.378+00:00
+__v:0
