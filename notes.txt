@@ -37,7 +37,7 @@ allow access from anywhere
 connect to database
 --------------------------------------------------
 data storage->clusters->connect->connect your application->copy
-mongodb+srv://justin123:123@blogger.qa4bn.mongodb.net/<dbname>?retryWrites=true&w=majority
+mongodb+srv://justin123:justin123@blogger.qa4bn.mongodb.net/<dbname>?retryWrites=true&w=majority
 --------------------------------------------------
 
 access data in database
