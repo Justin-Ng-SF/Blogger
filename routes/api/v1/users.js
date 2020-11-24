@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const config = require('config')
 
 //usermodel
-const User = require('../../../models/user')
+const User = require('../../../models/User')
 
 //@route POST api/users
 //@desc registers a user with a firstname, lastname, email, and password
