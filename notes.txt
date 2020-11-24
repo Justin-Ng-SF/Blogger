@@ -1,0 +1,46 @@
+npm i express express-validator bcryptjs config mongoose request jsonwebtoken
+npm i -D nodemon concurrently
+
+
+add to package.json
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  
+create mongodb database
+--------------------------------------------------
+https://account.mongodb.com/account/login?nds=true
+Top left - Create new Project
+Build a Cluster
+aws 
+North America oregon
+cluster tier - M0 - free forever 512mb
+--------------------------------------------------
+
+add user
+--------------------------------------------------
+security->database access->add new database user
+user - justin123
+pass - justin123
+read and write to any database
+--------------------------------------------------
+
+whitelist ip address
+--------------------------------------------------
+security->network access-> add ip address
+allow access from anywhere
+--------------------------------------------------
+
+connect to database
+--------------------------------------------------
+data storage->clusters->connect->connect your application->copy
+mongodb+srv://justin123:123@blogger.qa4bn.mongodb.net/<dbname>?retryWrites=true&w=majority
+--------------------------------------------------
+
+access data in database
+--------------------------------------------------
+data storage->clusters->collections
+--------------------------------------------------
