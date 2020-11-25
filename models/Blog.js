@@ -14,6 +14,9 @@ const BlogSchema = new Schema({
     firstName: {
         type: String
     },
+    lastName: {
+        type: String
+    },
     likes: [
         {
             user: {
