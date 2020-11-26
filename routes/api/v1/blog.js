@@ -55,7 +55,8 @@ router.post('/new', [auth, [
 //@desc get all blogs
 //@access private
 router.get('/', auth, async (req, res) => {
-    try {//limit amount of blogs 
+    try {
+        //can use .limit(amount) and .skip(amount) for mongodb collections
         const blogs = await Blog.find({"isDeleted": "false"}).sort({postedOn: -1})
         res.json(blogs)
     } catch (error) {
