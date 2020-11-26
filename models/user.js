@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required:true
+        required: true
     },
     lastName: {
         type: String,
@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    isDeleted: {
+    isDisabled: {
         type: Boolean,
         default: false
     }
