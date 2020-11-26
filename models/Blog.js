@@ -7,7 +7,11 @@ const BlogSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
-    text: {
+    header: {
+        type: String,
+        required: true
+    },
+    body: {
         type: String,
         required: true
     },
@@ -17,6 +21,17 @@ const BlogSchema = new Schema({
     lastName: {
         type: String
     },
+    picture: {
+        type: String
+    },
+    postedOn: {
+        type: Date,
+        default: Date.now
+    },
+    lastEdited: {
+        type: Date,
+    },
+    
     likes: [
         {
             user: {
@@ -28,4 +43,4 @@ const BlogSchema = new Schema({
 
 })
 
-module.exports = Post = mongoose.model('post', BlogSchema)
+module.exports = Blog = mongoose.model('blog', BlogSchema)

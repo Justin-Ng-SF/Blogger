@@ -9,10 +9,10 @@ const config = require('config')
 module.exports = function (req, res, next) {
     //get token from header
     //x-auth-token is header key that we want to send token in, token is 'value' in postman, x-auth-token is 'key'
-    const token = req.header('x-auth-token')
+    const token = req.header('Authorization')
 
     if (!token) {
-        return res.status(401).json({msg: 'No token, authorization denied'})
+        return res.status(401).json({msg: 'Invalid , authorization denied'})
     }
 
     //verify token
