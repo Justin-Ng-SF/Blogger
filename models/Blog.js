@@ -31,7 +31,10 @@ const BlogSchema = new Schema({
     lastEdited: {
         type: Date,
     },
-    
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
     likes: [
         {
             user: {

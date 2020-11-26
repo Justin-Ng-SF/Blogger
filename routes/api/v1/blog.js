@@ -56,7 +56,7 @@ router.post('/new', [auth, [
 //@access private
 router.get('/', auth, async (req, res) => {
     try {//limit amount of blogs 
-        const blogs = await Blog.find().sort({postedOn: -1})
+        const blogs = await Blog.find({"isDeleted": "false"}).sort({postedOn: -1})
         res.json(blogs)
     } catch (error) {
         console.log(error.message);
@@ -88,6 +88,33 @@ router.get('/:id', auth, async (req, res) => {
 //@route delete api/blog/:id
 //@desc delete by id
 //@access private
+router.put('/:id', auth, async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id)
+        
+        if (blog.isDeleted) {
+            return res.status(404).json({msg: 'Blog does not exist'})
+        }
+        //check if user owns blog
+        //blog.user is originally an object
+        if (blog.user.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'User not Authorized' });
+        }
+
+        blog.isDeleted = true;
+
+        await blog.save();
+
+        res.json(blog)
+    } catch (error) {
+        console.log(error.message);
+        if (error.kind === 'ObjectId') {
+            return res.status(404).json({msg: 'Blog does not exist'})
+        }
+        res.status(500).send('Server Blog Get Error')
+    }
+})
+/* Old delete blog
 router.delete('/:id', auth, async (req, res) => {
     try {
         const blog = await Blog.findById(req.params.id)
@@ -112,6 +139,8 @@ router.delete('/:id', auth, async (req, res) => {
         res.status(500).send('Server Blog Get Error')
     }
 })
+*/
+
 
 //@route blog api/blog/:id
 //@desc update by id
