@@ -1,15 +1,28 @@
 const express = require('express');
+var cors = require('cors')
 const connectDB = require('./config/db')
+var path = require('path');
 
 const app = express();
+app.use(cors())
 
 //connecting to mongodb database
 connectDB();
 
-//init middleware
+//init middleware for parse
 app.use(express.json({extended: false}))
 
-app.get('/', (req, res) => res.send('test'));
+//pages
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/assets/html/index.html'));
+});
+
+
+
+
+
+
+
 
 //define routes
 app.use('/api/users', require('./routes/api/v1/users'));
