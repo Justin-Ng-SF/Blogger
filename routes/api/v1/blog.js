@@ -54,7 +54,7 @@ router.post('/new', [auth, [
 //@route get api/blog
 //@desc get all blogs
 //@access private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         //can use .limit(amount) and .skip(amount) for mongodb collections
         const blogs = await Blog.find({"isDeleted": "false"}).sort({postedOn: -1})

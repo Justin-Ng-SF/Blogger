@@ -19,7 +19,8 @@ router.post('/register', [
         .not().isEmpty()
         .isLength({ max: 16 }),
     check('email', 'Please enter a valid email')
-        .isEmail(),
+        .isEmail()
+        .isLength({ max: 320}),
     check('password', 'Please enter a password with 6-50 characters long')
         .isLength({ min: 6, max: 50 })
 ],
