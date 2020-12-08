@@ -61,7 +61,7 @@ router.get('/', async (req, res) => {
         res.json(blogs)
     } catch (error) {
         console.log(error.message);
-        res.status(500).send('Server Blog Get All Error')
+        res.status(500).send('Server Error')
     }
 })
 

@@ -12,10 +12,10 @@ const User = require('../../../models/User')
 //@desc registers a user with a firstname, lastname, email, and password
 //@access public
 router.post('/register', [
-    check('firstName', 'Please enter the first 16 characters of your first name')
+    check('firstName', 'Please enter the first 1-16 characters of your first name')
         .not().isEmpty()
         .isLength({ max: 16 }),
-    check('lastName', 'Please enter the first 16 characters of your last name')
+    check('lastName', 'Please enter the first 1-16 characters of your last name')
         .not().isEmpty()
         .isLength({ max: 16 }),
     check('email', 'Please enter a valid email')
@@ -24,7 +24,8 @@ router.post('/register', [
     check('password', 'Please enter a password with 6-50 characters long')
         .isLength({ min: 6, max: 50 })
 ],
-async (req, res) => {
+    async (req, res) => {
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -75,6 +76,7 @@ async (req, res) => {
             (err, token) => {
                 if (err) throw err;
                 res.json({ token })
+
             }
         );
 
@@ -92,11 +94,12 @@ router.post('/login', [
     check('email', 'Please enter a valid email')
         .isEmail(),
     check('password', 'Password is required')
-        .exists()
+        .not().isEmpty()
 ],
 async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log({ errors: errors.array() })
         return res.status(400).json({ errors: errors.array() });
     }
 
@@ -109,7 +112,7 @@ async (req, res) => {
         if (!user) {
             //must put return because cannot set headers after sent to client, which is being done at res.send(...)
             console.log(email, 'does not exist')
-            return res.status(400).json({ errors: [{msg: 'Invalid credentials'}] });
+            return res.status(400).json({ errors: [{msg: 'Invalid email or password'}] });
         }
 
         //compares plaintext to encrypted
@@ -117,7 +120,7 @@ async (req, res) => {
         
         if (!isMatch) {
             console.log('Invalid Password')
-            return res.status(400).json({ errors: [{msg: 'Invalid credentials'}] });
+            return res.status(400).json({ errors: [{msg: 'Invalid email or password'}] });
         }
 
         //return jsonwebtoken
