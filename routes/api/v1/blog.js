@@ -1,4 +1,3 @@
-const { EDESTADDRREQ } = require('constants');
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
@@ -17,9 +16,9 @@ router.post('/new', [auth, [
         .isEmpty(),
     check('header', 'Header is required')
         .not()
-        .isEmpty(),
+        .isEmpty()
+        .isLength({ max: 24 })
 ] ], async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -54,11 +53,25 @@ router.post('/new', [auth, [
 //@route get api/blog
 //@desc get all blogs
 //@access private
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         //can use .limit(amount) and .skip(amount) for mongodb collections
-        const blogs = await Blog.find({"isDeleted": "false"}).sort({postedOn: -1})
+        const blogs = await Blog.find({"isDeleted": "false"}).sort({lastEdited: -1})
         res.json(blogs)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Server Error')
+    }
+})
+
+//@route get api/blog/myblogs
+//@desc get users blogs
+//@access private
+router.get('/myblogs', auth, async (req, res) => {
+    try {
+        //can use .limit(amount) and .skip(amount) for mongodb collections
+        const userBlogs = await Blog.find({"user": req.user.id, "isDeleted": "false"}).sort({lastEdited: -1});
+        res.json(userBlogs);
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Server Error')
@@ -89,7 +102,7 @@ router.get('/:id', auth, async (req, res) => {
 //@route delete api/blog/:id
 //@desc delete by id
 //@access private
-router.put('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
         const blog = await Blog.findById(req.params.id)
         
@@ -141,7 +154,35 @@ router.delete('/:id', auth, async (req, res) => {
     }
 })
 */
+//@route put api/blog/undo/:id
+//@desc delete by id
+//@access private
+// router.put('/undo/:id', auth, async (req, res) => {
+//     try {
+//         const blog = await Blog.findById(req.params.id)
+        
+//         // if (blog.isDeleted) {
+//         //     return res.status(404).json({msg: 'Blog does not exist'})
+//         // }
+//         //check if user owns blog
+//         //blog.user is originally an object
+//         if (blog.user.toString() !== req.user.id) {
+//             return res.status(401).json({ msg: 'User not Authorized' });
+//         }
 
+//         blog.isDeleted = false;
+
+//         await blog.save();
+
+//         res.json(blog)
+//     } catch (error) {
+//         console.log(error.message);
+//         if (error.kind === 'ObjectId') {
+//             return res.status(404).json({msg: 'Blog does not exist'})
+//         }
+//         res.status(500).send('Server Blog Get Error')
+//     }
+// })
 
 //@route blog api/blog/:id
 //@desc update by id
