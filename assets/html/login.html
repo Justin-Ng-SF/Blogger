@@ -9,189 +9,14 @@
         <link rel="stylesheet" type="text/css" href="/css/html.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        
+
+        <!-- auth -->
+        <script type="text/javascript" src="/scripts/auth/toggleLogin.js"></script>
+        <script type="text/javascript" src="/scripts/auth/register.js"></script>
+        <script type="text/javascript" src="/scripts/auth/login.js"></script>
     </head>
-    
-    <!-- 
-    <script type="module" src="/scripts/script.js" defer ></script>
-    <body>
-        <div id='blogs'></div>
-    </body> 
-    -->
 
-
-    <script>
-        //registers account
-        function register() {
-            console.log(document.getElementById('terms')?.checked)
-
- 
-            if(!document.getElementById('terms')?.checked){
-                console.log('off')
-                document.getElementById('terms-error').innerHTML = `<div style="color:red;">You must agree to the terms and conditions</div>`
-                return
-            }
-            
-            //input field values
-            var firstName = document.getElementById('first-name')?.value
-            var lastName = document.getElementById('last-name')?.value
-            var email = document.getElementById('email')?.value
-            var password = document.getElementById('password')?.value
-            //var password2 = document.getElementById('r-password2')?.value
-
-            //clear error messages
-            document.getElementById('first-name-error').innerHTML = ''
-            document.getElementById('last-name-error').innerHTML = ''
-            document.getElementById('email-error').innerHTML = ''
-            document.getElementById('password-error').innerHTML = ''
-            document.getElementById('terms-error').innerHTML = ''
-
-            //object to send
-            var body = {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
-            }
-
-            //returns jwt token if no errors, else return array of errors
-            fetch('/api/auth/register', {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            })
-            .then(response => response.json())
-            .then(data => {
-                //if a token is returned, register was successful
-                if(data.token){
-                        //if a token was returned, login was successful
-                        document.cookie = data.token
-                        //console.log(5, document.cookie)
-                        //console.log(data)
-                        //redirect here
-                        setTimeout(function(){document.location.href = "/blogs"},500);
-                }
-                else if(data.errors){
-                    data.errors.forEach(error => {
-                        if(error.msg==="User already exists"){
-                            document.getElementById('email-error').innerHTML = `<div style="color:red;">${error.msg}</div>`
-                        }
-                        if(error.param==="firstName"){
-                            document.getElementById('first-name-error').innerHTML = `<div style="color:red;">${error.msg}</div>`
-                        }
-                        if(error.param==="lastName"){
-                            document.getElementById('last-name-error').innerHTML = `<div style="color:red;">${error.msg}</div>`
-                        }
-                        if(error.param==="email"){
-                            document.getElementById('email-error').innerHTML = `<div style="color:red;">${error.msg}</div>`
-                        }
-                        if(error.param==="password"){
-                            document.getElementById('password-error').innerHTML = `<div style="color:red;">${error.msg}</div>`
-                        }
-                    });
-                }
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-            
-            //setTimeout(function(){document.location.href = "/test"},500);
-        }
-
-        //logs in
-        function login(){
-            //input field values
-            var email = document.getElementById('email')?.value
-            var password = document.getElementById('password')?.value
-
-            //object to send
-            var body = {
-                email: email,
-                password: password,
-            }
-
-            //clear error messages
-            if(email){
-                document.getElementById('email-error').innerHTML = ''
-            }
-            if(password){
-                document.getElementById('password-error').innerHTML = ''
-            }
-
-            //returns jwt token if no errors, else return array of errors
-            fetch('/api/auth/login', {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.token){
-                        //if a token was returned, login was successful
-                        document.cookie = data.token
-                        console.log(5, document.cookie)
-
-                        
-                        //console.log(data)
-                        //redirect here
-                        setTimeout(function(){document.location.href = "/blogs"},500);
-                    }
-                    else if(data.errors){
-                        data.errors.forEach(error => {
-                            if(error.msg==="Invalid email or password"){
-                                document.getElementById('email-error').innerHTML = `<div style="color:red;">${error.msg}</div>`
-                            }
-                            if(error.param==="email"){
-                                document.getElementById('email-error').innerHTML = `<div style="color:red;">${error.msg}</div>`
-                            }
-                            if(error.param==="password"){
-                                document.getElementById('password-error').innerHTML = `<div style="color:red;">${error.msg}</div>`
-                            }
-
-                        });
-
-                    }
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-
-
-        }
-
-        //toggles login and register
-        function toggle() {
-            //reset input fields
-            document.getElementById('first-name-error').innerHTML = ''
-            document.getElementById('last-name-error').innerHTML = ''
-            document.getElementById('email-error').innerHTML = ''
-            document.getElementById('password-error').innerHTML = ''
-            document.getElementById('terms-error').innerHTML = ''
-
-            var firstlastname = document.getElementById("first-last-name");
-            var register = document.getElementById("register");
-            var login = document.getElementById("login");
-            var checkbox = document.getElementById("checkbox");
-
-            if (register.style.display === "none") {
-                register.style.display = "block";
-                firstlastname.style.display = "block";
-                checkbox.style.display = "block";
-                login.style.display = "none";
-            } else {
-                register.style.display = "none";
-                firstlastname.style.display = "none";
-                checkbox.style.display = "none";
-                login.style.display = "block";
-            }
-        }
-    </script>
-
-    <body onload="toggle()">       
+    <body onload="toggleLogin()">       
         <div class="container">
             <!--------------------------register--------------------------- -->
             <form class="ui form" onsubmit="return false">
@@ -224,37 +49,32 @@
                 <!-- <div class="field">
                     <input style="width:500px" maxLength="50" type="password" id="r-password2" placeholder="Confirm Password">
                 </div> -->
-                <div id="checkbox">
+                <div id="checkbox" class="padding">
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox" id="terms">
-                            <label>I agree to the Terms and Conditions</label>
+                            <label class="mediumFont">I agree to the Terms and Conditions</label>
                         </div>
                         <div id='terms-error'>
                         </div>
                     </div>
                 </div>
-
+<!-------------------------------------------->
                 <div id="register">
-                    <button class="ui button" onclick="register()">Register</button>
-                    <p class="message">Already Registered?
-                        <a href="#" onclick="toggle()">Login here.</a>
+                    <button style="font-size: 1.3rem;" class="ui button" onclick="register()">Register</button>
+                    <p class="mediumFont">Already Registered?
+                        <a href="#" onclick="toggleLogin()">Login here.</a>
                     </p>     
                 </div>
-
+<!-------------------------------------------->
                 <div id="login">
-                    <button class="ui button" onclick="login()">Login</button>
-                    <p class="message">
+                    <button style="font-size: 1.3rem;" class="ui button" onclick="login()">Login</button>
+                    <p class="mediumFont">
                         Don't have an account?
-                        <a href="#" onclick="toggle()">Create an account here.</a>
+                        <a href="#" class="mediumFont" onclick="toggleLogin()">Create an account here.</a>
                     </p>     
                 </div>
             </form> 
-
         </div>
-
-
-
     </body>
-
 </html>
