@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const currentDate = Date.now
 //ref users refers to users model which allows us to know what came from which user (ie the blog or the likes)
 const BlogSchema = new Schema({
     user: {
@@ -26,10 +26,11 @@ const BlogSchema = new Schema({
     },
     postedOn: {
         type: Date,
-        default: Date.now
+        default: currentDate
     },
     lastEdited: {
         type: Date,
+        default: currentDate
     },
     isDeleted: {
         type: Boolean,
