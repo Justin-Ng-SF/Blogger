@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Blogger</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+        <!-- <link rel="stylesheet" type="text/css" href="~/assets/css/html.css"> -->
+        <link rel="stylesheet" type="text/css" href="/css/html.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <!-- auth -->
+        <script type="text/javascript" src="/scripts/auth/checkAuth.js"></script>
+        <script type="text/javascript" src="/scripts/auth/logout.js"></script>
+
+        <!-- blogs -->
+        <script type="text/javascript" src="/scripts/blogs/createBlog.js"></script>
+    </head>
+
+
+    <!-- <script>
+
+        function print1() {
+            console.log(document.getElementById("header")?.value)
+            //console.log(e.dataset.header)
+            //console.log(e.dataset())
+
+        }
+    </script> -->
+
+    <body>
+      <!-- navbar ------------------------------------------>
+      <div class="ui secondary pointing menu">
+        <a href="blogs" style="font-size: 1.5rem;" class="item">
+          Home
+        </a>
+        <a href="myBlogs" style="font-size: 1.5rem;" class="item">
+          My Blogs
+        </a>
+        <a style="font-size: 1.5rem;" class="active item">
+          Create Blog
+        </a>
+        <div class="right menu">
+          <a style="font-size: 1.5rem;" class="ui item" onclick="logout()">
+            Logout
+          </a>
+        </div>
+      </div>
+      <!----------------------------------------------------->
+      <!-- create blog ------------------------------------------>
+      <div class="padding">
+          <!-- title input ------------------------------------------>
+        <div class="ui form">
+          <div id='success'></div>
+          <div class="field">
+            <label>Title</label>
+            <textarea rows="1" id='title'></textarea>
+            <div id='title-error'></div>
+          </div>
+          <!-- description input ------------------------------------------>
+          <div class="field">
+            <label>Description</label>
+            <textarea id='desc'></textarea>
+            <div id='desc-error'></div>
+          </div>
+          <!-- submit button ------------------------------------------>
+          <button style="font-size: 1.3rem;" class="ui primary button" onclick="createBlog()">
+            Create Blog
+          </button>
+
+        </div>
+
+      </div>
+      <!----------------------------------------------------->
+    </body>
+</html>
