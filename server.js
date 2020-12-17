@@ -21,7 +21,15 @@ app.get('/', function(req, res) {
 app.get('/blogs', function(req, res) {
     res.sendFile(path.join(__dirname + '/assets/html/displayBlogs.html'));
 });
-
+app.get('/myBlogs', function(req, res) {
+    res.sendFile(path.join(__dirname + '/assets/html/myBlogs.html'));
+});
+// app.get('/myBlogs/:id', function(req, res) {
+//     res.sendFile(path.join(__dirname + '/assets/html/updateBlog.html'));
+// });
+app.get('/newblog', function (req, res) {
+    res.sendFile(path.join(__dirname + '/assets/html/createBlog.html'));
+});
 app.get('/test', (req, res) => res.send('API Running'));
 
 
