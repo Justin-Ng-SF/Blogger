@@ -187,5 +187,28 @@ router.put('/enable', auth, async (req, res)=>{
     }
 });
 
+//@route get api/auth/isuser
+//@desc checks to see if the token being used belongs to a user
+//@access 
+router.get('/isuser', auth, async (req, res)=>{
+    try {
+        //select('-password') removes user.password from user object
+        const user = await User.findById(req.user.id).select('-password');
+
+        console.log(user)
+        if (!user) {
+            return res.json({ msg: 'Account not found' })
+        }
+
+        return res.json({ msg: 'Account found' })
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).send('Server Error');
+    }
+});
+
+
+
+//change name method here?
 
 module.exports = router;
