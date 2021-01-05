@@ -195,7 +195,7 @@ router.get('/isuser', auth, async (req, res)=>{
         //select('-password') removes user.password from user object
         const user = await User.findById(req.user.id).select('-password');
 
-        console.log(user)
+        //console.log(user)
         if (!user) {
             return res.json({ msg: 'Account not found' })
         }

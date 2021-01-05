@@ -2,9 +2,22 @@ const express = require('express');
 var cors = require('cors')
 const connectDB = require('./config/db')
 var path = require('path');
-
+const config = require('config')
 const app = express();
 app.use(cors())
+
+var fileupload = require('express-fileupload')
+app.use(fileupload({
+    useTempFiles: true
+}))
+
+var cloundinary = require('cloudinary').v2;
+cloundinary.config({
+    cloud_name: config.get('cloudinaryName'),
+    api_key: config.get('cloudinaryKey'),
+    api_secret: config.get('cloudinarySecret')
+
+})
 
 //connecting to mongodb database
 connectDB();
@@ -24,11 +37,14 @@ app.get('/blogs', function(req, res) {
 app.get('/myBlogs', function(req, res) {
     res.sendFile(path.join(__dirname + '/assets/html/myBlogs.html'));
 });
-// app.get('/myBlogs/:id', function(req, res) {
-//     res.sendFile(path.join(__dirname + '/assets/html/updateBlog.html'));
-// });
+app.get('/blog', function(req, res) {
+    res.sendFile(path.join(__dirname + '/assets/html/viewBlogByID.html'));
+});
 app.get('/newblog', function (req, res) {
     res.sendFile(path.join(__dirname + '/assets/html/createBlog.html'));
+});
+app.get('/test2', function (req, res) {
+    res.sendFile(path.join(__dirname + '/assets/html/test.html'));
 });
 app.get('/test', (req, res) => res.send('API Running'));
 
@@ -42,6 +58,7 @@ app.get('/test', (req, res) => res.send('API Running'));
 app.use('/api/users', require('./routes/api/v1/users'));
 app.use('/api/auth', require('./routes/api/v1/auth'));
 app.use('/api/blog', require('./routes/api/v1/blog'));
+app.use('/api/upload', require('./routes/api/v1/upload'));
 
 const PORT = process.env.PORT || 5000;
 

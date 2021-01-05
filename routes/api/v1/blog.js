@@ -6,6 +6,8 @@ const auth = require('../../../middleware/auth');
 const Blog = require('../../../models/Blog');
 const User = require('../../../models/User')
 
+var cloudinary = require('cloudinary').v2;
+
 //@route blog api/blog
 //@desc make a blog
 //@access private
@@ -39,6 +41,7 @@ router.post('/new', [auth, [
             firstName: user.firstName,
             lastName: user.lastName,
             user: req.user.id,
+            picture: req.body.picture
         })
 
         const blog = await newBlog.save();
@@ -78,6 +81,8 @@ router.get('/myblogs', auth, async (req, res) => {
     }
 })
 
+
+
 //@route get api/blog/:id
 //@desc get blog by id
 //@access private
@@ -114,6 +119,14 @@ router.delete('/:id', auth, async (req, res) => {
         if (blog.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'User not Authorized' });
         }
+
+        //delete image from cloudinary
+        const pictureURL = blog.picture;
+        var pictureID = pictureURL.substring(pictureURL.length - 24, pictureURL.length - 4);
+        cloudinary.uploader.destroy(pictureID, function (err, res) {
+            console.log(err)
+            return res.json({ msg: err});
+        })
 
         blog.isDeleted = true;
 
@@ -204,6 +217,20 @@ router.put('/:id', [auth, [
         //blog.user is originally an object
         if (blog.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'User not Authorized' });
+        }
+
+        //if there is picture, 
+        if (req.body.picture) {
+            //delete image from cloudinary
+            const pictureURL = blog.picture;
+            var pictureID = pictureURL.substring(pictureURL.length - 24, pictureURL.length - 4);
+            cloudinary.uploader.destroy(pictureID, function (err, res) {
+                if (err) {
+                    console.log(err)
+                }
+            })
+            //save new picture to blog obj
+            blog.picture = req.body.picture;
         }
 
         blog.header = req.body.header
