@@ -18,12 +18,12 @@
         <script type="text/javascript" src="/scripts/blogs/toggleUpdates.js"></script>
         <script type="text/javascript" src="/scripts/blogs/updateBlog.js"></script>
         <script type="text/javascript" src="/scripts/blogs/deleteBlog.js"></script>
-        <script type="text/javascript" src="/scripts/blogs/deleteBlog.js"></script>
+
 
     </head>
-    <script type="module" src="/scripts/test.js" defer ></script>
+    <!-- <script type="module" src="/scripts/test.js" defer ></script> -->
 
-    <body onload="toggleLogin()">
+    <body onload="toggleUpdate()">
       <!-- navbar ------------------------------------------>
       <div class="ui secondary pointing menu">
         <a href="/blogs" style="font-size: 1.5rem;" class="item">
@@ -59,6 +59,13 @@
                 <textarea id='desc'></textarea>
                 <div id='desc-error'></div>
             </div>
+
+            <!-- picture upload ------------------------------------------>
+            <form method="post" enctype="multipart/form-data">
+              <input type="file" name="files">
+              <!-- <input type="submit" value="Upload File" name="submit"> -->
+            </form>
+            <div id='file-error'></div>
             <!-- update button ------------------------------------------>
             <div>
               <button style="font-size: 1.3rem;" class="ui primary button" onclick="updateBlog()">

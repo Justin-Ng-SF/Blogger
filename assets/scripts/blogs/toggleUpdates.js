@@ -1,5 +1,5 @@
 //delete later
-function toggleLogin() {
+function toggleUpdate() {
 
     var urlParams = new URLSearchParams(window.location.search);
     var updateBlog = document.getElementById("update-blog");

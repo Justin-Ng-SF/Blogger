@@ -79,17 +79,25 @@ fetch('/api/blog/myblogs', {
             }
             timeAgoMsg = `Posted ${passedTime} ${timeType} ago`
         }
+        var div = ''
+        if (blog.picture) {
+            div = `
+            <div class="image">
+                <img src=${blog.picture} style="
+                
+                max-width:100%;
+                max-height:200px;
 
+            </div>`
+        }
 
         
         html += `
         <div class="four wide column">
             <div class="ui card">
-            <!-- 
-                <div class="image">
-                    <img src="/images/avatar2/large/kristy.png">
-                </div>
-            --!>
+                    `
+                    + div +
+                    `
                 <div class="content">
 
                     <a class="header">${blog.header}</a>

@@ -1,4 +1,6 @@
-fetch('/api/blog', {
+function getBlogByID() {
+    var urlParams = new URLSearchParams(window.location.search);
+    fetch(`/api/blog/${urlParams.get('id')}`, {
         method: 'get',
         headers: {
             'Authorization': getCookie('jwt')
@@ -6,26 +8,26 @@ fetch('/api/blog', {
     })
     .then(response => response.json())
     .then(data => {
-        if (!data || data.msg === "Invalid , authorization denied") {
+        if (!data) {
             return
         }
-
+        console.log(data)
         //html is a concatenated list of all the blogs
-        var html = '<div class="ui grid">';
+
         //in the html file this is being called in, assigns id='blog' in that html file to this
         var currentDate = Date.now();
+    
 
-        data.forEach(blog => {
-            var postedOn = parseInt(Date.parse(blog.postedOn))
-            var editedOn = parseInt(Date.parse(blog.lastEdited))
-
+            var postedOn = parseInt(Date.parse(data.postedOn))
+            var editedOn = parseInt(Date.parse(data.lastEdited))
+    
             var timeType = '';
             var passedTime = 0;
             var timeAgoMsg = '';
             //time in seconds
             var eTimeType = '';
             var ePassedTime = 0;
-
+    
             if (parseInt(postedOn)-parseInt(editedOn)!==0) {
                 ePassedTime = Math.floor((parseInt(currentDate) - parseInt(editedOn)) / 1000)
                 if (ePassedTime === 1) {
@@ -81,74 +83,44 @@ fetch('/api/blog', {
                 }
                 timeAgoMsg = `Posted ${passedTime} ${timeType} ago`
             }
-
-
-            if (blog.body.length > 40) {
-                blog.body = blog.body.substring(0, 25) + '...';
-            }
-            var div = ''
-            // `
-            //     <div>
-            //         <a href="/blog/?id=${blog._id}" class="image">
-            //             <img src=${blog.picture} style="
-            //             <!--center image with 1:1 h:w scaling-->
-            //             display: block;
-            //             margin-left: auto;
-            //             margin-right: auto;
-            //             width:100%;
-            //             max-height:200px;
-            //             />
-            //         </a>
-            //     </div>
-            //     `
-            if (blog.picture) {
-                div = `
-                <div>
-                    <a href="/blog/?id=${blog._id}" class="image">
-                        <img src=${blog.picture} style="
-                        width:100%;
-                        max-height:200px;
-                        />
-                    </a>
+    
+    
+            var html = `
+            <div class="ui card">
+            <!-- 
+                <div class="image">
+                    <img src="/images/avatar2/large/kristy.png">
                 </div>
-                `
-            }
-
-            html += `
-            <div class="four wide column">
-                <div class="ui card">
-                    `
-                    + div +
-                    `
-                    <div class="content">
-                        <i class="right floated like icon" onclick="likeUnlikeBlog(this)" data-header="${blog._id}">${blog.likes.length}</i>
-                        <a style="color:DodgerBlue; font-size:100%" href="/blog/?id=${blog._id}" class="header">${blog.header} by ${blog.firstName}</a>
-                        <div class="meta">
-                            <span class="date">${timeAgoMsg}</span>
-                        </div>
-                        <div class="description" style="word-wrap: break-word;">
-                        ${sanitizeHTML(blog.body)}
-                        </div>
-                    </div>
+            --!>
+            <div class="content">
+                <i class="right floated like icon" onclick="likeUnlikeBlog(this)" data-header="${data._id}">${data.likes.length}</i>
+                <div class="header">${data.header} by ${data.firstName}</div>
+                <div class="meta">
+                    <span class="date">${timeAgoMsg}</span>
+                </div>
+                <div class="description" style="word-wrap: break-word;">
+                    ${sanitizeHTML(data.body)}
                 </div>
             </div>
             `
-        });
-        html += "</div>";
-        document.getElementById('blogs').innerHTML = html;
+        // });
 
-})
-.catch(function(error) {
+        document.getElementById('blog').innerHTML = html;
+    
+    })
+    .catch(function(error) {
     console.log(error);
-});
+    });
+}
+
 
 function sanitizeHTML(text) {
-    var element = document.createElement('div');
-    element.innerText = text;
-    return element.innerHTML;
+var element = document.createElement('div');
+element.innerText = text;
+return element.innerHTML;
 }
 function getCookie(name) {
-	const value = `; ${document.cookie}`;
-	const parts = value.split(`; ${name}=`);
-	if (parts.length === 2) return parts.pop().split(';').shift();
+const value = `; ${document.cookie}`;
+const parts = value.split(`; ${name}=`);
+if (parts.length === 2) return parts.pop().split(';').shift();
 }

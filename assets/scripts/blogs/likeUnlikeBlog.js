@@ -19,12 +19,12 @@ function likeUnlikeBlog(e) {
         })
         .then(response => response.json())
         .then(data => {
-            setTimeout(function(){document.location.href = "/blogs"},500);
+            setTimeout(function(){document.location.reload()},500);
         })
         .catch(function (error) {
             console.log(error);
         });
-    } else setTimeout(function(){document.location.href = "/blogs"},500);
+    } else setTimeout(function(){document.location.reload()},500);
     
     })
     .catch(function(error) {
