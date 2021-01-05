@@ -15,6 +15,7 @@
 
         <!-- blogs -->
         <script type="text/javascript" src="/scripts/blogs/createBlog.js"></script>
+        <!-- <script type="text/javascript" src="/scripts/blogs/uploadImage.js"></script> -->
     </head>
 
 
@@ -63,6 +64,13 @@
             <textarea id='desc'></textarea>
             <div id='desc-error'></div>
           </div>
+          <!-- picture upload ------------------------------------------>
+          
+          <form method="post" enctype="multipart/form-data">
+            <input type="file" name="files">
+            <!-- <input type="submit" value="Upload File" name="submit"> -->
+          </form>
+          <div id='file-error'></div>
           <!-- submit button ------------------------------------------>
           <button style="font-size: 1.3rem;" class="ui primary button" onclick="createBlog()">
             Create Blog
