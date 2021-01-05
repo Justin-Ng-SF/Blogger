@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Blogger</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+        <!-- <link rel="stylesheet" type="text/css" href="~/assets/css/html.css"> -->
+        <link rel="stylesheet" type="text/css" href="/css/html.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <!-- auth -->
+        <script type="module" src="/scripts/auth/checkAuth.js" defer ></script>
+        <script type="text/javascript" src="/scripts/auth/logout.js"></script>
+
+        <!-- blogs -->
+        <script type="text/javascript" src="/scripts/blogs/getBlogByID.js"></script>
+        <script type="text/javascript" src="/scripts/blogs/likeUnlikeBlog.js"></script>
+
+    </head>
+    <script type="module" src="/scripts/test.js" defer ></script>
+
+    <body onload="getBlogByID()">
+      <!-- navbar ------------------------------------------>
+      <div class="ui secondary pointing menu">
+        <a href="/blogs" style="font-size: 1.5rem;" class="item">
+          Home
+        </a>
+        <a href="/myBlogs" style="font-size: 1.5rem;" class="item">
+          My Blogs
+        </a>
+        <a href="/newblog" style="font-size: 1.5rem;" class="item">
+          Create Blog
+        </a>
+        <div class="right menu">
+          <a style="font-size: 1.5rem;" class="ui item" onclick="logout()">
+            Logout
+          </a>
+        </div>
+      </div>
+      <!----------------------------------------------------->
+      <!-- update blog ------------------------------------------>
+      <div class="padding" id="update-blog">
+
+            <div id='blog'></div>
+
+
+            <!-- title input ------------------------------------------>
+
+            <!-- description input ------------------------------------------>
+
+            <!-- update button ------------------------------------------>
+
+
+
+
+      <!----------------------------------------------------->
+      <!-- my blogs ------------------------------------------>
+    </body>
+
+</html>
